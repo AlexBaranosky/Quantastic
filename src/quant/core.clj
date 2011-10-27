@@ -10,7 +10,7 @@
 (defn extract-via-scrape
   "Extracts trade-idea data from an html source"
   [html]
-  (let [trs (map third ($ html "tr" (s-expressions)))
+  (let [trs (map third ($ html "tr[class*=dataSmall]" (s-expressions)))
         tr->trade-idea (fn [[td1 td2 _ td4 _ td6]]
                           {
                             :ric (ric-from-params (-> td2 third first third first second :href))
