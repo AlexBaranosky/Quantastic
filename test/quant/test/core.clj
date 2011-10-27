@@ -6,22 +6,6 @@
            [org.w3c.tidy Tidy]
            [java.io StringWriter StringReader]))
 
-(defn- pretty-printing-jtidy []
-  (doto (Tidy.)
-    (.setSmartIndent true)
-    (.setTrimEmptyElements true)
-    (.setShowWarnings false)
-    (.setXmlOut true)
-    (.setQuiet true)))
-
-(defn illformed-html->xhtml [illformed-html]
-  (let [writer (StringWriter.)]
-    (.parse (pretty-printing-jtidy) (StringReader. illformed-html) writer)
-    (str writer)))
-
-(fact "asdf"
-  (illformed-html->xhtml "<html>\n  <head>\n    <meta name=\"generator\"\n    content=\"HTML Tidy for Java (vers. 2009-12-01), see jtidy.sourceforge.net\" />\n    <title></title>\n  </head>\n  <body>\n    <img src=\"\" />\n  </body>\n</html>\n"))
-
 (defn ric-from-params [param-string]
   (second (re-matches #"^.*\?symbol=([^&]+).*$" param-string)))
 
@@ -34,12 +18,14 @@
 (defn extract-via-scrape
   "Extracts trade-idea data from an html source"
   [html]
-  (let [trs (map third ($ (illformed-html->xhtml html) "tr" tr (s-expressions)))
-        tr->trade-idea (fn [[td1 td2 _td3_ td4 _td5_ td6]]
-                          { :ric (ric-from-params (-> td2 third first third first second :href))
-                            :direction (-> td4 third)
-                            :amount (-> td6 third)
-                            :transaction-date (-> td1 third) } )]
+  (let [trs (map third ($ html "tr" (s-expressions)))
+        tr->trade-idea (fn [[td1 td2 _ td4 _ td6]]
+                          {
+                            :ric (ric-from-params (-> td2 third first third first second :href))
+                            :direction (third td4)
+                            :amount (third td6)
+                            :transaction-date (third td1)
+                          } )]
     (map tr->trade-idea trs)))
 
 (def sample-page (slurp "./test/quant/test/sample-page.html"))
