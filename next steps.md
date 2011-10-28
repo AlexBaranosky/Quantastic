@@ -2,8 +2,8 @@
 Next Steps
 ==========
 
-* store :amount as dollar-aware datastructure
+* capture number of shares traded
 * create analysis function
-* create historial data source
+* create historical data source
 * create simulator
 

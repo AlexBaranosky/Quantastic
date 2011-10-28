@@ -28,7 +28,7 @@
                           {
                             :ric (ric-from-params (-> td2 third first third first second :href))
                             :direction (lowercase-keyword (third td4))
-                            :amount (third td6)
+                            :dollar-amount (Double/parseDouble (.substring (third td6) 1))
                             :transaction-date (date-from (third td1))
                           } )]
     (map tr->trade-idea trs)))

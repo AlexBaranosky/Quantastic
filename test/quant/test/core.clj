@@ -27,11 +27,11 @@
 (fact "pulls list of transaction info from html string 2"
   (take 2 (extract-via-scrape sample-page)) => [ { :ric "GOOG.O"
                                                    :direction :buy
-                                                   :amount "$0.00"
+                                                   :dollar-amount 0.0
                                                    :transaction-date (DateMidnight. 2011 10 14) }
                                                  { :ric "GOOG.O"
                                                    :direction :sell
-                                                   :amount "$598.75"
+                                                   :dollar-amount 598.75
                                                    :transaction-date (DateMidnight. 2011 10 13) } ])
 
 (tabular
