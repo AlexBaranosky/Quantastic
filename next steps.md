@@ -1,6 +1,7 @@
 
+Next Steps
+==========
 
-* :transaction-date (DateMidnight. 2011 10 14) } ]) ;; real date object
 * add index card system module design to the repo
 * store direction as :buy/:sell
 * store :amount as dollar-aware datastructure
