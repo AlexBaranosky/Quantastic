@@ -1,13 +1,6 @@
-# quant
+Quantastic
+==========
 
-FIXME: write description
+Extract insider trader data from Reuter's, analyze data for trade idea suggestions to user, use historical analyzer to test effectiveness of algorithms
 
-## Usage
-
-FIXME: write
-
-## License
-
-Copyright (C) 2011 FIXME
-
-Distributed under the Eclipse Public License, the same as Clojure.
+Originally worked on at [BAZNEX - Boston Autonomous Zone Nerd Nexus](http://groups.google.com/group/baznex)
