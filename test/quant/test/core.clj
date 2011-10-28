@@ -28,10 +28,12 @@
   (take 2 (extract-via-scrape sample-page)) => [ { :ric "GOOG.O"
                                                    :direction :buy
                                                    :dollar-amount 0.0
+                                                   :shares 934
                                                    :transaction-date (DateMidnight. 2011 10 14) }
                                                  { :ric "GOOG.O"
                                                    :direction :sell
                                                    :dollar-amount 598.75
+                                                   :shares 2266
                                                    :transaction-date (DateMidnight. 2011 10 13) } ])
 
 (tabular
