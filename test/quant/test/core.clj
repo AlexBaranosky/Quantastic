@@ -24,7 +24,7 @@
 
 (def sample-page (slurp "./test/quant/test/sample-page.html"))
 
-(fact "pulls list of transaction info from html string 2"
+(fact "pulls list of transaction info from Reuters Insider Trading html page"
   (take 2 (extract-via-scrape sample-page)) => [ { :ric "GOOG.O"
                                                    :direction :buy
                                                    :dollar-amount 0.0

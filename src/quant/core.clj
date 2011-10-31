@@ -17,7 +17,7 @@
   {"Jan" 1 "Feb" 2 "Mar" 3 "Apr" 4 "May" 5 "Jun" 6 "Jul" 7 "Aug" 8 "Sep" 9 "Oct" 10 "Nov" 11 "Dec" 12})
 
 (defn- date-from [s]
-  (let [[_ day-of-month month-str year] (re-matches #"^\s*(\d\d)\s+(\w+)\s+(\d\d\d\d)\s*$" s)]
+  (let [[_ day-of-month month-str year] (re-matches #"^\s*(\d{2})\s+(\w{3})\s+(\d{4})\s*$" s)]
     (DateMidnight. (parse-int year) (month-str->num month-str) (parse-int day-of-month))))
 
 (defn ric-from-params [param-string]
