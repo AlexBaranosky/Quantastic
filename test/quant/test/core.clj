@@ -1,5 +1,5 @@
 (ns quant.test.core
-  (:use [quant.core :only (ric-from-params extract-via-scrape month-str->num third fourth fifth lowercase-keyword)]
+  (:use [quant.core :only (ric-from-params extract-via-scrape month-str->num third fourth fifth lowercase-keyword html->sexp)]
         [apricot-soup :only ($ s-expressions)]
         [midje.sweet])
   (:import [org.joda.time DateMidnight]

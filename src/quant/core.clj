@@ -24,17 +24,24 @@
 (defn ric-from-params [param-string]
   (second (re-matches #"^.*\?symbol=([^&]+).*$" param-string)))
 
+(defn html->sexp [html]
+  "for testing"
+  (map third ($ html "tr[class*=dataSmall]" (s-expressions))))
+
+(def tag-value third)
+(def tag-attr second)
+
 (defn extract-via-scrape
   "Extracts trade-idea data from an html source"
   [html]
-  (let [col->ric #(-> % third first third first second :href ric-from-params)
-        col->shares #(-> % third first third remove-commas parse-int)
+  (let [td->ric #(-> % tag-value first tag-value first tag-attr :href ric-from-params)
+        td->shares #(-> % tag-value first tag-value remove-commas parse-int)
         tr->trade-idea (fn [[[_ _ date] ric-column _ [_ _ direction] shares-column [_ _ amount]]]
                           {
-                            :ric (col->ric ric-column)
+                            :ric (td->ric ric-column)
                             :direction (lowercase-keyword direction)
                             :dollar-amount (Double/parseDouble (remove-dollars amount))
-                            :shares (shares-column->shares shares-column)
+                            :shares (td->shares shares-column)
                             :transaction-date (date-from date)
                           } )
         trs (map third ($ html "tr[class*=dataSmall]" (s-expressions)))]
