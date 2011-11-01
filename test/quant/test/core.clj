@@ -10,14 +10,8 @@
   (lowercase-keyword "BobCratchet") => :bobcratchet
   (lowercase-keyword "Bob Cratchet") => :bob-cratchet)
 
-(tabular
-  (fact "extra english ways of getting nth element of a seq"
-    (?nth [1 2 3 4 5 6]) => ?element)
-
-  ?nth   ?element
-  third  3
-  fourth 4
-  fifth  5)
+(fact
+  (third [1 2 3 4 5 6]) => 3)
 
 (fact "pulls RIC out of link params"
   (ric-from-params "?symbol=GOOG.O&name=ARORA+NIKESH") => "GOOG.O")

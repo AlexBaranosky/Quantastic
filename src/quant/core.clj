@@ -4,8 +4,6 @@
   (:import [org.joda.time DateMidnight]))
 
 (def third (comp first rest rest))
-(def fourth (comp first rest rest rest))
-(def fifth (comp first rest rest rest rest))
 
 (defn lowercase-keyword [s]
   (keyword (.toLowerCase (replace-str " " "-" s))))
