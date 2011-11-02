@@ -34,12 +34,12 @@
   [html]
   (let [td->ric #(-> % tag-value first tag-value first tag-attr :href ric-from-params)
         td->shares #(-> % tag-value first tag-value remove-commas parse-int)
-        tr->trade-idea (fn [[[_ _ date] ric-column _ [_ _ direction] shares-column [_ _ amount]]]
+        tr->trade-idea (fn [[[_ _ date] ric-td _ [_ _ direction] shares-td [_ _ amount]]]
                           {
-                            :ric (td->ric ric-column)
+                            :ric (td->ric ric-td)
                             :direction (lowercase-keyword direction)
                             :dollar-amount (Double/parseDouble (remove-dollars amount))
-                            :shares (td->shares shares-column)
+                            :shares (td->shares shares-td)
                             :transaction-date (date-from date)
                           } )
         trs (map third ($ html "tr[class*=dataSmall]" (s-expressions)))]
