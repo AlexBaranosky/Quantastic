@@ -4,14 +4,13 @@
   (:import [org.joda.time DateMidnight]))
 
 (def third (comp first rest rest))
-(def fourth (comp first rest rest rest))
-(def fifth (comp first rest rest rest rest))
 
 (defn lowercase-keyword [s]
   (keyword (.toLowerCase (replace-str " " "-" s))))
 
 (defn parse-int [s] (Integer/parseInt s))
 (def remove-commas (partial replace-str "," ""))
+(def remove-dollars (partial replace-str "$" ""))
 
 (def month-str->num
   {"Jan" 1 "Feb" 2 "Mar" 3 "Apr" 4 "May" 5 "Jun" 6 "Jul" 7 "Aug" 8 "Sep" 9 "Oct" 10 "Nov" 11 "Dec" 12})
@@ -23,16 +22,25 @@
 (defn ric-from-params [param-string]
   (second (re-matches #"^.*\?symbol=([^&]+).*$" param-string)))
 
+(defn html->sexp [html]
+  "for testing"
+  (map third ($ html "tr[class*=dataSmall]" (s-expressions))))
+
+(def tag-value third)
+(def tag-attr second)
+
 (defn extract-via-scrape
   "Extracts trade-idea data from an html source"
   [html]
-  (let [trs (map third ($ html "tr[class*=dataSmall]" (s-expressions)))
-        tr->trade-idea (fn [[td1 td2 _ td4 td5 td6]]
+  (let [td->ric #(-> % tag-value first tag-value first tag-attr :href ric-from-params)
+        td->shares #(-> % tag-value first tag-value remove-commas parse-int)
+        tr->trade-idea (fn [[[_ _ date] ric-column _ [_ _ direction] shares-column [_ _ amount]]]
                           {
-                            :ric (ric-from-params (-> td2 third first third first second :href))
-                            :direction (lowercase-keyword (third td4))
-                            :dollar-amount (Double/parseDouble (.substring (third td6) 1))
-                            :shares (-> td5 third first third remove-commas parse-int)
-                            :transaction-date (date-from (third td1))
-                          } )]
+                            :ric (td->ric ric-column)
+                            :direction (lowercase-keyword direction)
+                            :dollar-amount (Double/parseDouble (remove-dollars amount))
+                            :shares (td->shares shares-column)
+                            :transaction-date (date-from date)
+                          } )
+        trs (map third ($ html "tr[class*=dataSmall]" (s-expressions)))]
     (map tr->trade-idea trs)))
